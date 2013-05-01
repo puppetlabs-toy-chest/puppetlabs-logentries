@@ -3,7 +3,10 @@ LogEntries module
 
 This is the [logentries](http://logentries.com) module.
 
-To use it:
+[![Build Status](https://travis-ci.org/puppetlabs/puppetlabs-logentries.png)](https://travis-ci.org/puppetlabs/puppetlabs-logentries)
+
+Usage
+---
 
     class { 'logentries':
       account_key => 'key',
