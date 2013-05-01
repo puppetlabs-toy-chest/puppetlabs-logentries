@@ -44,7 +44,7 @@ class logentries::dependencies {
         descr    => "logentries $::operatingsystemrelease $::architecture Repository ",
         enabled  => 1,
         baseurl  => $::operatingsystem ? {
-          /(RedHat|redhat|centos)/ =>  "http://rep.logentries.com/rh/$::architecture",
+          /(Fedora|fedora|RedHat|redhat|centos)/ =>  "http://rep.logentries.com/rh/$::architecture",
           'Amazon'                 =>  "http://rep.logentries.com/$::operatingsystemrelease/$::architecture",
         },
         gpgcheck => 1,
