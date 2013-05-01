@@ -26,7 +26,7 @@ class logentries($account_key) {
   }
 
   exec { 'le_register':
-    command => "le register --yes --account-key=${account_key}",
+    command => "/bin/le register --yes --account-key=${account_key}",
     creates => '/etc/le/config',
     require => Package['logentries'],
     notify  => Service['logentries'],
