@@ -13,7 +13,7 @@ describe 'logentries', :type => 'class' do
     it { should contain_package('logentries-daemon').with_ensure('latest') }
     it { should contain_exec('le_register').with(
       'require' => 'Package[logentries]',
-      'notify'  => 'Service[logentries]',
+      'notify'  => 'Service[logentries]'
     ) }
     it { should contain_service('logentries').with(
       'ensure'      => 'running',
