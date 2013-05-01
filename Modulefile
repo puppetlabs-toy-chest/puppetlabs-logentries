@@ -1,0 +1,8 @@
+name    'puppetlabs-logentries'
+version '0.0.1'
+source 'https://github.com/puppetlabs/puppetlabs-logentries'
+author 'puppetlabs'
+license 'Apache 2.0'
+summary 'logentries agent module'
+description 'A module to install the logentries agent.'
+project_page 'https://github.com/puppetlabs/puppetlabs-logentries'
