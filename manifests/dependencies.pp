@@ -45,7 +45,7 @@ class logentries::dependencies {
         enabled  => 1,
         baseurl  => $::operatingsystem ? {
           /(Fedora|fedora|RedHat|redhat|centos)/ =>  'http://rep.logentries.com/rh/$basearch',
-          'Amazon'                 =>  "http://rep.logentries.com/$::operatingsystemrelease/\$basearch",
+          'Amazon'                 =>  "http://rep.logentries.com/amazon\$releasever/\$basearch",
         },
         gpgcheck => 1,
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
