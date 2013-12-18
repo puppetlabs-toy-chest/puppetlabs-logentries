@@ -35,7 +35,7 @@ class logentries::dependencies {
       }
 
       exec { 'import_key':
-        command     => "/bin/rpm --import $rpmkey",
+        command     => "/bin/rpm --import ${rpmkey}",
         subscribe   => File[$rpmkey],
         refreshonly => true,
       }
@@ -44,8 +44,8 @@ class logentries::dependencies {
         descr    => "logentries $::operatingsystemrelease $::architecture Repository ",
         enabled  => 1,
         baseurl  => $::operatingsystem ? {
-          /(Fedora|fedora|RedHat|redhat|centos)/ =>  'http://rep.logentries.com/rh/$basearch',
-          'Amazon'                 =>  "http://rep.logentries.com/amazon\$releasever/\$basearch",
+          /(Fedora|fedora|RedHat|redhat|centos)/ =>  "http://rep.logentries.com/rh/${basearch}",
+          'Amazon'                               =>  "http://rep.logentries.com/amazon\${releasever}/\${basearch}",
         },
         gpgcheck => 1,
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',

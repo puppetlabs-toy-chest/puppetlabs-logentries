@@ -28,7 +28,7 @@ class logentries($account_key, $name='', $hostname='', $region_flag='') {
   if ($name != '') {
     $name_flag = "--name='${name}'"
   }
- 
+
   if ($hostname != '') {
     $hostname_flag = "--hostname='${hostname}'"
   }
