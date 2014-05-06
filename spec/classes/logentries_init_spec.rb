@@ -4,7 +4,10 @@ describe 'logentries', :type => 'class' do
 
  context 'setting all params' do
     let(:params) { {
-      :account_key => 'key'
+      :account_key => 'key',
+      :name        => 'name',
+      :hostname    => 'hostname',
+      :region_flag => '--region',
     } }
 
     let(:facts) { {:operatingsystem => 'Debian' } }

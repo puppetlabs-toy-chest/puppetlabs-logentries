@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-class logentries($account_key) {
+class logentries($account_key, $name='', $hostname='', $region_flag='') {
 
   require logentries::dependencies
 
@@ -25,8 +25,17 @@ class logentries($account_key) {
     ensure  => latest,
   }
 
+  if ($name != '') {
+    $name_flag = "--name='${name}'"
+  }
+
+  if ($hostname != '') {
+    $hostname_flag = "--hostname='${hostname}'"
+  }
+
   exec { 'le_register':
-    command => "/bin/le register --yes --account-key=${account_key}",
+    command => "le register --yes --account-key=${account_key} ${name_flag} ${hostname_flag} ${region_flag}",
+    path    => '/usr/bin/:/bin/',
     creates => '/etc/le/config',
     require => Package['logentries'],
     notify  => Service['logentries'],
