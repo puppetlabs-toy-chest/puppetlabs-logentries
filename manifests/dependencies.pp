@@ -64,10 +64,11 @@ class logentries::dependencies {
       }
 
       apt::source { 'logentries':
-        location   => 'http://rep.logentries.com/',
-        repos      => 'main',
-        key        => 'C43C79AD',
-        key_server => 'pgp.mit.edu',
+        location    => 'http://rep.logentries.com/',
+        repos       => 'main',
+        include_src => false,
+        key         => 'C43C79AD',
+        key_server  => 'pgp.mit.edu',
       }
 
       exec { 'apt-update':
