@@ -1,3 +1,6 @@
 fixtures:
   symlinks:
     logentries: "#{source_dir}"
+  repositories:
+    apt: 'https://github.com/puppetlabs/puppetlabs-apt'
+    stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib'
