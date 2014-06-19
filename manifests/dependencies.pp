@@ -63,40 +63,12 @@ class logentries::dependencies {
         ensure => latest,
       }
 
-      # file { '/etc/apt/trusted.gpg.d/logentries.gpg':
-      #   source => 'puppet:///modules/logentries/logentries.gpg',
-      #   notify => Exec['add-logentries-apt-key'],
-      # }
-
-      # exec { 'add-logentries-apt-key':
-      #   command     => "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD"
-      #   " && gpg -a --export C43C79AD | apt-key add -",
-      #   refreshonly => true,
-      # }
-      # apt::key { 'logentries':
-      #   key => 'C43C79AD',
-      #   key_server => 'pgp.mit.edu',
-      # }
-
-      # echo 'deb http://rep.logentries.com/ precise main' >/etc/apt/sources.list.d/logentries.list
-
       apt::source { 'logentries':
         location   => 'http://rep.logentries.com/',
         repos      => 'main',
         key        => 'C43C79AD',
         key_server => 'pgp.mit.edu',
       }
-
-      # file { '/etc/apt/sources.list.d/logentries.list':
-      #   ensure  => present,
-      #   content => template('logentries/apt_source.erb'),
-      #   owner   => 'root',
-      #   group   => 'root',
-      #   mode    => '0644',
-      #   require => [Package['apt-transport-https'],
-      #               File['/etc/apt/trusted.gpg.d/logentries.gpg']],
-      #   notify  => Exec['apt-update']
-      # }
 
       exec { 'apt-update':
         command     => '/usr/bin/apt-get update',
