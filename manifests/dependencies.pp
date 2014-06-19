@@ -63,10 +63,10 @@ class logentries::dependencies {
         ensure => latest,
       }
 
-      file { '/etc/apt/trusted.gpg.d/logentries.gpg':
-        source => 'puppet:///modules/logentries/logentries.gpg',
-        notify => Exec['add-logentries-apt-key'],
-      }
+      # file { '/etc/apt/trusted.gpg.d/logentries.gpg':
+      #   source => 'puppet:///modules/logentries/logentries.gpg',
+      #   notify => Exec['add-logentries-apt-key'],
+      # }
 
       # exec { 'add-logentries-apt-key':
       #   command     => "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD"
