@@ -59,10 +59,6 @@ class logentries::dependencies {
 
     'debian', 'ubuntu': {
 
-      package { 'apt-transport-https':
-        ensure => latest,
-      }
-
       apt::source { 'logentries':
         location    => 'http://rep.logentries.com/',
         repos       => 'main',
@@ -74,6 +70,11 @@ class logentries::dependencies {
       exec { 'apt-update':
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
+      }
+
+      package { 'apt-transport-https':
+        ensure => latest,
+        require => [Apt::Source['logentries'], Exec['apt-update']]
       }
 
       package { 'python-setproctitle':
