@@ -5,8 +5,8 @@ describe 'logentries', :type => 'class' do
  context 'setting all params' do
     let(:params) { {
       :account_key => 'key',
-      :name        => 'name',
-      :hostname    => 'hostname',
+      :le_name     => 'name',
+      :le_hostname => 'hostname',
       :region_flag => '--region',
     } }
 
