@@ -15,7 +15,7 @@ Puppet::Type.type(:logentries_token).provide :token do
       "request"   => "new_log",
       "user_key"  => resource[:account_key],
       "host_key"  => le_host_id,
-      "source"    => "test",
+      "source"    => "token",
       "name"      => resource[:name],
       "retention" => -1,
     }
