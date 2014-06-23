@@ -19,12 +19,11 @@ Puppet::Type.type(:logentries_token).provide :token do
       "name"      => resource[:name],
       "retention" => -1,
     }
-    p params
-    p url
     rsp = Net::HTTP.post_form(url,
                               params)
     rsp_json = JSON.parse(rsp.body)
     new_key = rsp_json['log_key']
+    p rsp_json
     open('/etc/environment', 'a') do |f|
       f.puts "#{env_var}=#{new_key}"
     end
