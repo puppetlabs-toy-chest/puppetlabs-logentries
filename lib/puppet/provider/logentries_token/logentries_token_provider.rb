@@ -22,9 +22,10 @@ Puppet::Type.type(:logentries_token).provide :token do
     rsp = Net::HTTP.post_form(url,
                               params)
     rsp_json = JSON.parse(rsp.body)
-    new_key = rsp_json['log_key']
+    new_key = rsp_json['log']['token']
     p rsp_json
-    open('/etc/environment', 'a') do |f|
+    FileUtils::mkdir_p '/etc/logentries'
+    open('/etc/logentries/%s' % resource[:env_var], 'a') do |f|
       f.puts "#{env_var}=#{new_key}"
     end
   end
@@ -47,13 +48,16 @@ Puppet::Type.type(:logentries_token).provide :token do
   end
 
   def exists?
-    etc_env = File.new('/etc/environment', 'r')
-    while (line = etc_env.gets)
-      if line.start_with?(env_var)
-        token_exists = true
+    filename = '/etc/logentries/%s' % resource[:env_var]
+    if File.exist? filename
+      etc_env = File.new(filename, 'r')
+      while (line = etc_env.gets)
+        if line.start_with?(env_var)
+          token_exists = true
+        end
       end
+      etc_env.close
+      token_exists
     end
-    etc_env.close
-    token_exists
   end
 end
