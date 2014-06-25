@@ -26,7 +26,7 @@ Puppet::Type.type(:logentries_token).provide :token do
     p rsp_json
     FileUtils::mkdir_p '/etc/logentries'
     open('/etc/logentries/%s' % resource[:env_var], 'a') do |f|
-      f.puts "#{env_var}=#{new_key}"
+      f.puts "#{new_key}"
     end
   end
 
@@ -49,15 +49,6 @@ Puppet::Type.type(:logentries_token).provide :token do
 
   def exists?
     filename = '/etc/logentries/%s' % resource[:env_var]
-    if File.exist? filename
-      etc_env = File.new(filename, 'r')
-      while (line = etc_env.gets)
-        if line.start_with?(env_var)
-          token_exists = true
-        end
-      end
-      etc_env.close
-      token_exists
-    end
+    File.exist? filename
   end
 end
