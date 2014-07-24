@@ -25,7 +25,7 @@ class logentries::dependencies {
   }
 
   case $::operatingsystem {
-    'Fedora', 'fedora', 'RedHat', 'redhat', 'centos', 'Amazon': {
+    'Fedora', 'fedora', 'RedHat', 'redhat', 'CentOS', 'Amazon': {
 
       $rpmkey = '/etc/pki/rpm-gpg/RPM-GPG-KEY-logentries'
 
