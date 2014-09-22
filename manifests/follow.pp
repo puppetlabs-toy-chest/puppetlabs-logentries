@@ -17,7 +17,11 @@
 # limitations under the License.
 #
 
-define logentries::follow($display_name='', $log_type='') {
+define logentries::follow(
+  $display_name='',
+  $log_type='',
+  $allow_follow=hiera('allow_le_follow'),
+  ) {
 
   if ($display_name != '') {
     $name_flag = "--name '${display_name}'"
@@ -28,11 +32,14 @@ define logentries::follow($display_name='', $log_type='') {
   }
 
   $log_file=regsubst($name, '[;\\/:*?\"<>|&]', '_', 'G')
-  exec { "le_follow_${name}":
-    command => "le follow ${name} ${name_flag} ${type_flag}",
-    unless  => "le followed ${name}",
-    path    => '/usr/bin/:/bin/',
-    require => [Package['logentries'], Exec['le_register']],
-    notify  => Service['logentries'],
+  if ($allow_follow) {
+    # dont follow if follow is not set.
+    exec { "le_follow_${name}":
+      command => "le follow ${name} ${name_flag} ${type_flag}",
+      unless  => "le followed ${name}",
+      path    => '/usr/bin/:/bin/',
+      require => [Package['logentries'], Exec['le_register']],
+      notify  => Service['logentries'],
+    }
   }
 }
