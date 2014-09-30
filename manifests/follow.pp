@@ -37,5 +37,6 @@ define logentries::follow(
     path    => '/usr/bin/:/bin/',
     require => [Package['logentries'], Exec['le_register']],
     notify  => Service['logentries'],
+    timeout => 30,
   }
 }
