@@ -35,7 +35,7 @@ class logentries(
   }
 
   package { [ 'logentries', 'logentries-daemon' ]:
-    ensure  => latest,
+    ensure => latest,
   }
 
   exec { 'le_register':
