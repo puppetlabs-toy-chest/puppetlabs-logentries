@@ -57,7 +57,7 @@ class logentries::dependencies {
       }
     }
 
-    'debian', 'ubuntu': {
+    'debian', 'Debian', 'ubuntu', 'Ubuntu' : {
 
       apt::source { 'logentries':
         location    => 'http://rep.logentries.com/',
