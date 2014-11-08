@@ -64,22 +64,7 @@ class logentries::dependencies {
         repos       => 'main',
         include_src => false,
         key         => 'C43C79AD',
-        key_server  => 'pgp.mit.edu',
-      }
-
-      exec { 'apt-update':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-      }
-
-      package { 'apt-transport-https':
-        ensure  => latest,
-        require => [Apt::Source['logentries'], Exec['apt-update']]
-      }
-
-      package { 'python-setproctitle':
-        ensure  => latest,
-        require => Exec['apt-update']
+        key_server  => 'keyserver.ubuntu.com',
       }
 
     }
