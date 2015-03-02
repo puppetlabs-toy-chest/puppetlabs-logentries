@@ -10,7 +10,11 @@ describe 'logentries', :type => 'class' do
       :region_flag => '--region',
     } }
 
-    let(:facts) { {:operatingsystem => 'Debian' } }
+    let(:facts) { {:osfamily => 'Debian',
+		   :operatingsystem => 'Ubuntu',
+		   :lsbdistid => 'Ubuntu',
+		   :lsbdistcodename => 'trusty' }
+                }
     it { should contain_class 'logentries' }
     it { should contain_package('logentries').with_ensure('latest') }
     it { should contain_package('logentries-daemon').with_ensure('latest') }

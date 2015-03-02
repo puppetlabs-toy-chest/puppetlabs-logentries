@@ -20,7 +20,7 @@
 define logentries::follow(
   $display_name='',
   $log_type='',
-  ) {
+) {
 
   if ($display_name != '') {
     $name_flag = "--name '${display_name}'"
@@ -33,8 +33,7 @@ define logentries::follow(
   $log_file=regsubst($name, '[;\\/:*?\"<>|&]', '_', 'G')
   exec { "le_follow_${name}":
     command => "le follow ${name} ${name_flag} ${type_flag}",
-    unless  => "python -c \"if '${display_name}' not in '''$(le whoami)''':\
-exit(1)\"",
+    unless  => "python -c \"if '${display_name}' not in '''\$(le whoami)''':exit(1)\"",
     # "le followed ${name}",
     path    => '/usr/bin/:/bin/',
     require => [Package['logentries'], Exec['le_register']],

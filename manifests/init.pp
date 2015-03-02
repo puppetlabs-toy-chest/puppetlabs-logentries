@@ -17,13 +17,14 @@
 # limitations under the License.
 #
 
-class logentries($account_key, $le_name='', $le_hostname='', $region_flag='') {
+class logentries(
+  $account_key,
+  $le_name='',
+  $le_hostname='',
+  $region_flag='',
+) {
 
   require logentries::dependencies
-
-  package { [ 'logentries', 'logentries-daemon' ]:
-    ensure  => latest,
-  }
 
   if ($le_name != '') {
     $name_flag = "--name='${le_name}'"
@@ -31,6 +32,10 @@ class logentries($account_key, $le_name='', $le_hostname='', $region_flag='') {
 
   if ($le_hostname != '') {
     $hostname_flag = "--hostname='${le_hostname}'"
+  }
+
+  package { [ 'logentries', 'logentries-daemon' ]:
+    ensure => latest,
   }
 
   exec { 'le_register':
