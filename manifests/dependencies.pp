@@ -25,7 +25,7 @@ class logentries::dependencies {
   }
 
   case $::operatingsystem {
-    'Fedora', 'fedora', 'RedHat', 'redhat', 'centos', 'CentOS', 'Amazon': {
+    /(?i:fedora|redhat|centos|amazon)/ : {
 
       $rpmkey = '/etc/pki/rpm-gpg/RPM-GPG-KEY-logentries'
 
@@ -40,21 +40,30 @@ class logentries::dependencies {
         refreshonly => true,
       }
 
+      case $::operatingsystem {
+        'Amazon' : {
+          $baseurl = 'http://rep.logentries.com/amazonlatest/$basearch'
+          $req_packages = [ 'python27-simplejson' ]
+        }
+        default: {
+          $baseurl = 'http://rep.logentries.com/rh/$basearch'
+          $req_packages = [ 'python-setproctitle', 'python-simplejson' ]
+        }
+      }
+
       yumrepo { 'logentries':
-        descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository ",
+        descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository",
         enabled  => 1,
-        baseurl  => $::operatingsystem ? {
-          /(Fedora|fedora|RedHat|redhat|CentOS|centos)/ => "http://rep.logentries.com/rh/${basearch}",
-          'Amazon'                                      => 'http://rep.logentries.com/amazon${releasever}/${basearch}',
-        },
+        baseurl  => $baseurl,
         gpgcheck => 1,
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
       }
 
-      package { [ 'python-setproctitle', 'python-simplejson' ]:
+      package { $req_packages :
         ensure  => latest,
         require => Yumrepo['logentries']
       }
+      
     }
 
     'debian', 'Debian', 'ubuntu', 'Ubuntu' : {
