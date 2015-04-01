@@ -25,7 +25,7 @@ class logentries::dependencies {
   }
 
   case $::operatingsystem {
-    'Fedora', 'fedora', 'RedHat', 'redhat', 'centos', 'CentOS', 'Amazon': {
+    /(?i:fedora|redhat|centos|amazon)/ : {
 
       $rpmkey = '/etc/pki/rpm-gpg/RPM-GPG-KEY-logentries'
 
@@ -44,8 +44,8 @@ class logentries::dependencies {
         descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository ",
         enabled  => 1,
         baseurl  => $::operatingsystem ? {
-          /(Fedora|fedora|RedHat|redhat|CentOS|centos)/ => "http://rep.logentries.com/rh/${basearch}",
-          'Amazon'                                      => 'http://rep.logentries.com/amazon${releasever}/${basearch}',
+          /(?i:fedora|redhat|centos)/ => 'http://rep.logentries.com/rh/$basearch',
+          'Amazon'                    => 'http://rep.logentries.com/amazonlatest/$basearch',
         },
         gpgcheck => 1,
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
