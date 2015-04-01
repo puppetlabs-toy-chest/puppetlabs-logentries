@@ -3,7 +3,7 @@ LogEntries module
 
 This is the [logentries](http://logentries.com) module.
 
-[![Build Status](https://travis-ci.org/puppetlabs/puppetlabs-logentries.png)](https://travis-ci.org/puppetlabs/puppetlabs-logentries)
+[![Build Status](https://travis-ci.org/pmoranga/puppetlabs-logentries.svg?branch=master)](https://travis-ci.org/pmoranga/puppetlabs-logentries)
 
 Usage
 ---
