@@ -51,7 +51,12 @@ class logentries::dependencies {
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
       }
 
-      package { [ 'python-setproctitle', 'python-simplejson' ]:
+      $req_packages = $::operatingsystem ?{
+        'Amazon' => [ 'python27-simplejson' ] ,
+        default  => [ 'python-setproctitle', 'python-simplejson' ]
+      }
+
+      package { $req_packages :
         ensure  => latest,
         require => Yumrepo['logentries']
       }
