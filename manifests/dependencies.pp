@@ -40,26 +40,30 @@ class logentries::dependencies {
         refreshonly => true,
       }
 
-      yumrepo { 'logentries':
-        descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository ",
-        enabled  => 1,
-        baseurl  => $::operatingsystem ? {
-          /(?i:fedora|redhat|centos)/ => 'http://rep.logentries.com/rh/$basearch',
-          'Amazon'                    => 'http://rep.logentries.com/amazonlatest/$basearch',
-        },
-        gpgcheck => 1,
-        gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
+      case $::operatingsystem {
+        'Amazon' : {
+          $baseurl = 'http://rep.logentries.com/amazonlatest/$basearch'
+          $req_packages = [ 'python27-simplejson' ]
+        }
+        default: {
+          $baseurl = 'http://rep.logentries.com/rh/$basearch'
+          $req_packages = [ 'python-setproctitle', 'python-simplejson' ]
+        }
       }
 
-      $req_packages = $::operatingsystem ?{
-        'Amazon' => [ 'python27-simplejson' ] ,
-        default  => [ 'python-setproctitle', 'python-simplejson' ]
+      yumrepo { 'logentries':
+        descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository",
+        enabled  => 1,
+        baseurl  => $baseurl,
+        gpgcheck => 1,
+        gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
       }
 
       package { $req_packages :
         ensure  => latest,
         require => Yumrepo['logentries']
       }
+      
     }
 
     'debian', 'Debian', 'ubuntu', 'Ubuntu' : {
