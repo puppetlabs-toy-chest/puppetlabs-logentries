@@ -25,7 +25,7 @@ class logentries::dependencies {
   }
 
   case $::operatingsystem {
-    'Fedora', 'fedora', 'RedHat', 'redhat', 'centos', 'Amazon': {
+    /(?i:fedora|redhat|centos|amazon)/ : {
 
       $rpmkey = '/etc/pki/rpm-gpg/RPM-GPG-KEY-logentries'
 
@@ -40,59 +40,42 @@ class logentries::dependencies {
         refreshonly => true,
       }
 
+      case $::operatingsystem {
+        'Amazon' : {
+          $baseurl = 'http://rep.logentries.com/amazonlatest/$basearch'
+          $req_packages = [ 'python27-simplejson' ]
+        }
+        default: {
+          $baseurl = 'http://rep.logentries.com/rh/$basearch'
+          $req_packages = [ 'python-setproctitle', 'python-simplejson' ]
+        }
+      }
+
       yumrepo { 'logentries':
-        descr    => "logentries $::operatingsystemrelease $::architecture Repository ",
+        descr    => "logentries ${::operatingsystemrelease} ${::architecture} Repository",
         enabled  => 1,
-        baseurl  => $::operatingsystem ? {
-          /(Fedora|fedora|RedHat|redhat|centos)/ =>  "http://rep.logentries.com/rh/${basearch}",
-          'Amazon'                               =>  "http://rep.logentries.com/amazon\${releasever}/\${basearch}",
-        },
+        baseurl  => $baseurl,
         gpgcheck => 1,
         gpgkey   => 'http://rep.logentries.com/RPM-GPG-KEY-logentries',
       }
 
-      package { [ 'python-setproctitle', 'python-simplejson' ]:
+      package { $req_packages :
         ensure  => latest,
         require => Yumrepo['logentries']
       }
+      
     }
 
-    'debian', 'ubuntu': {
+    'debian', 'Debian', 'ubuntu', 'Ubuntu' : {
 
-      package { 'apt-transport-https':
-        ensure => latest,
+      apt::source { 'logentries':
+        location    => 'http://rep.logentries.com/',
+        repos       => 'main',
+        include_src => false,
+        key         => 'C43C79AD',
+        key_server  => 'keyserver.ubuntu.com',
       }
 
-      file { '/etc/apt/trusted.gpg.d/logentries.gpg':
-        source => 'puppet:///modules/logentries/logentries.gpg',
-        notify => Exec['add-logentries-apt-key'],
-      }
-
-      exec { 'add-logentries-apt-key':
-        command     => 'apt-key add /etc/apt/trusted.gpg.d/logentries.gpg',
-        refreshonly => true,
-      }
-
-      file { '/etc/apt/sources.list.d/logentries.list':
-        ensure  => present,
-        content => template('logentries/apt_source.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => [Package['apt-transport-https'],
-                    File['/etc/apt/trusted.gpg.d/logentries.gpg']],
-        notify  => Exec['apt-update']
-      }
-
-      exec { 'apt-update':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-      }
-
-      package { 'python-setproctitle':
-        ensure  => latest,
-        require => Exec['apt-update']
-      }
     }
 
     default: {
