@@ -1,4 +1,6 @@
 .bundle
 .cache
 .kitchen
+.ruby-version
+Gemfile.lock
 bin
