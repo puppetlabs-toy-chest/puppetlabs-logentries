@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-class logentries($account_key, $name='', $hostname='', $region_flag='') {
+class logentries($account_key, $hostname='', $region_flag='') {
 
   require logentries::dependencies
 
