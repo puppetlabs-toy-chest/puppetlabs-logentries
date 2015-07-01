@@ -1,5 +1,6 @@
-.bundle
-.cache
-.kitchen
+.bundle/
+.cache/
+.kitchen/
+vendor/
 Gemfile.lock
 bin
