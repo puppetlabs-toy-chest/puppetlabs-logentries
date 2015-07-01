@@ -1,0 +1,24 @@
+{
+  "name": "puppetlabs-logentries",
+  "version": "0.0.1",
+  "author": "Puppetlabs",
+  "license": "Apache-2.0",
+  "summary": "A module to install the logentries agent",
+  "source": "https://github.com/puppetlabs/puppetlabs-logentries",
+  "project_page": "https://forge.puppetlabs.com/puppetlabs/logentries",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-logentries/issues",
+  "tags": ["logentries"],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease":[ "5.0", "6.0" ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [ "12.04", "14.04" ]
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/apt", "version_requirement": ">=1.0.0 <2.0.0" }
+  ]
+}
