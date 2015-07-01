@@ -9,11 +9,10 @@ Usage
 ---
 
     class { 'logentries':
-      account_key => 'key',
+      le_account_key => 'key',
     }
 
-Replacing `key` with your [logentries](http://logentries.com) account key available from the
-My Account page.
+Replacing `key` with your [logentries](http://logentries.com) account key available from the My Account page.
 
 Author
 ---

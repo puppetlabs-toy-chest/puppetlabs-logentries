@@ -1,55 +1,54 @@
+# Class: logentries
 #
-# Author:: James Turnbull <james@puppetlabs.com>
-# Module Name:: logentries
+# This class installs, configs and starts the logentries service
 #
-# Copyright 2013, Puppet Labs
+# Parameters:
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Sample Usage:
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# class { 'logentries':
+#   le_account_key => '',
+#   le_name        => 'Puppet Master',
+# }
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 class logentries(
-  $account_key,
-  $le_name='',
-  $le_hostname='',
-  $region_flag='',
-) {
+  $le_account_key,
+  $le_name,
+  $le_type,
+  $le_hostname,
+  $le_region,
 
-  require logentries::dependencies
+  $package_name   = $::logentries::params::package_name,
+  $package_manage = $::logentries::params::package_manage,
+  $package_ensure = $::logentries::params::package_ensure,
 
-  if ($le_name != '') {
-    $name_flag = "--name='${le_name}'"
+  $service_name   = $::logentries::params::service_name,
+  $service_manage = $::logentries::params::service_manage,
+  $service_enable = $::logentries::params::service_enable,
+  $service_ensure = $::logentries::params::service_ensure,
+
+  $repo_manage = $::logentries::params::repo_manage,
+) inherits ::logentries::params {
+
+  class { 'logentries::install':
+    package_name   => $package_name,
+    package_manage => $package_manage,
+    package_ensure => $package_ensure,
+    repo_manage    => $repo_manage,
   }
 
-  if ($le_hostname != '') {
-    $hostname_flag = "--hostname='${le_hostname}'"
+  class { 'logentries::config':
+    le_account_key => $le_account_key,
+    le_name        => $le_name,
+    le_type        => $le_type,
+    le_hostname    => $le_hostname,
+    le_region      => $le_region
   }
 
-  package { [ 'logentries', 'logentries-daemon' ]:
-    ensure => latest,
-  }
-
-  exec { 'le_register':
-    command => "le register --yes --account-key=${account_key} ${name_flag} ${hostname_flag} ${region_flag}",
-    path    => '/usr/bin/:/bin/',
-    creates => '/etc/le/config',
-    require => Package['logentries'],
-    notify  => Service['logentries'],
-  }
-
-  service { 'logentries':
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    require    => Package['logentries-daemon'],
+  class { 'logentries::service':
+    service_name   => $service_name,
+    service_ensure => $service_ensure,
+    service_enable => $service_enable,
+    service_manage => $service_manage,
   }
 }
