@@ -79,7 +79,7 @@ class logentries::dependencies (
             location    => 'http://rep.logentries.com/',
             repos       => 'main',
             include_src => false,
-            key         => 'C43C79AD',
+            key         => 'FA7FA2E59A243096E1B4105DA5270289C43C79AD',
             key_server  => 'keyserver.ubuntu.com',
           }
         }
