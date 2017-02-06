@@ -28,10 +28,14 @@ class logentries(
 
   if ($le_name != '') {
     $name_flag = "--name='${le_name}'"
+  } else {
+    $name_flag = undef
   }
 
   if ($le_hostname != '') {
     $hostname_flag = "--hostname='${le_hostname}'"
+  } else {
+    $hostname_flag = undef
   }
 
   package { [ 'logentries', 'logentries-daemon' ]:
